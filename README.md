@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 AI-Powered Interactive Maps
 
-## Getting Started
+## 📌 Overview
+AI-Powered Interactive Maps is an innovative web application that combines **interactive maps** with **AI-generated insights**. Users can **select a location** on the map, and AI will provide **detailed explanations** about that place, including historical significance, local culture, travel recommendations, and more!
 
-First, run the development server:
+## 🔥 Features
+- 🗺 **Interactive Maps** – Click or search for any location worldwide.
+- 🤖 **AI Integration** – Get instant AI-generated insights about the selected place.
+- 📍 **Custom Location Selection** – Users can manually pick a spot on the map.
+- 🔍 **Search & Autocomplete** – Quickly find places using an intuitive search feature.
+- 🌐 **Multilingual Support** – AI responses available in multiple languages.
+- 🏕 **Travel Recommendations** – Get AI-generated travel tips, best places to visit, and local insights.
+- 📚 **Historical & Cultural Data** – AI provides historical context and interesting facts about locations.
 
+## ⚙️ Tech Stack
+- **Frontend:** React, Next.js, Tailwind CSS
+- **Maps:** Leaflet.js / Mapbox API / Google Maps API
+- **AI Backend:** OpenAI / Gemini API (for AI-generated responses)
+- **Authentication:** Clerk / Firebase Auth
+- **Backend:** Node.js, Express, PostgreSQL / MongoDB
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/ai-maps.git
+cd ai-maps
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2️⃣ Install Dependencies
+```bash
+yarn install
+# or
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3️⃣ Set Up Environment Variables
+Create a `.env.local` file and add the following:
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/login
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/register
+```
 
-## Learn More
+### 4️⃣ Run the Project
+```bash
+yarn dev
+# or
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🎯 How It Works
+1️⃣ **User selects a location** on the interactive map. 🗺
+2️⃣ **AI processes the request** and fetches relevant data. 🤖
+3️⃣ **AI generates insights** (history, travel tips, cultural facts, etc.). 📜
+4️⃣ **Information is displayed** dynamically on the UI. 🔥
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📌 Example Use Cases
+- **Travelers** – Learn about places before visiting.
+- **Students & Researchers** – Get historical and cultural information quickly.
+- **Real Estate & Urban Planning** – Analyze area insights for projects.
+- **General Exploration** – Discover new places with AI-powered explanations.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📜 License
+This project is open-source and available under the [MIT License](LICENSE).
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🌍 **Explore the world with AI!** 🧠✨
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
