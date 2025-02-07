@@ -23,8 +23,8 @@ AI-Powered Interactive Maps is an innovative web application that combines **int
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/ai-maps.git
-cd ai-maps
+git clone https://github.com/tuxedo-labs/StreetAI.git
+cd StreetAI
 ```
 
 ### 2️⃣ Install Dependencies
