@@ -29,7 +29,7 @@ const navItems = [
 
 export default function Navbar() {
   return (
-    <header className="flex h-20 w-full items-center justify-between px-4 md:px-6 bg-white text-black dark:bg-black dark:text-white">
+    <header className="flex h-[60px] w-full items-center justify-between px-4 md:px-6 bg-white text-black dark:bg-black dark:text-white">
       <div className="flex items-center gap-4">
         <Sheet>
           <SheetTrigger asChild>
@@ -45,7 +45,7 @@ export default function Navbar() {
             side="left"
             className="bg-white text-black dark:bg-black dark:text-white"
           >
-            <div className="grid gap-2 py-6">
+            <div className="grid gap-2 py-2">
               {navItems.map(({ name, link }, index) => (
                 <Link
                   key={`${name}-${index}`}
@@ -75,7 +75,7 @@ export default function Navbar() {
             <Link
               key={`${name}-${index}`}
               href={link}
-              className="group inline-flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-200 hover:text-gray-600 focus:bg-gray-200 focus:text-gray-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-gray-800 dark:hover:text-gray-300 dark:focus:bg-gray-800 dark:focus:text-gray-300"
+              className="group inline-flex h-9 items-center justify-center rounded-md px-4 py-1 text-sm font-medium transition-colors hover:bg-gray-200 hover:text-gray-600 focus:bg-gray-200 focus:text-gray-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-black dark:hover:text-gray-300 dark:focus:bg-black dark:focus:text-gray-300"
               prefetch={false}
             >
               {name}
@@ -99,11 +99,11 @@ export default function Navbar() {
             <UserButton
               appearance={{
                 elements: {
-                  userButtonAvatarBox: "w-8 h-8",
+                  userButtonAvatarBox: "w-8 h-8 text-black",
                   userButtonPopoverCard:
-                    "bg-white text-black dark:bg-black dark:text-white",
+                    "bg-white text-black dark:bg-black",
                   userButtonPopoverActionButton:
-                    "hover:bg-gray-200 dark:hover:bg-gray-800",
+                    "hover:bg-gray-200",
                   userButtonPopoverActionButtonText:
                     "text-black dark:text-white",
                   userButtonPopoverFooter:

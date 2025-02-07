@@ -4,8 +4,7 @@ import "./globals.css";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
-import { ThemeProvider } from "@/components/provider/theme-provider";
-
+import { ThemeProvider } from "@/provider/theme-provider";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
