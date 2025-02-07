@@ -43,7 +43,7 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="bg-white text-black dark:bg-black dark:text-white"
+            className="bg-white text-black dark:bg-black dark:text-white w-1/5"
           >
             <div className="grid gap-2 py-2">
               {navItems.map(({ name, link }, index) => (
