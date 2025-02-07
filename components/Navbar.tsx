@@ -27,7 +27,7 @@ const navItems = [
   },
 ];
 
-export default function Navbar() {
+export default async function Navbar() {
   return (
     <header className="flex h-[60px] w-full items-center justify-between px-4 md:px-6 bg-white text-black dark:bg-black dark:text-white">
       <div className="flex items-center gap-4">
@@ -97,6 +97,7 @@ export default function Navbar() {
 
           <SignedIn>
             <UserButton
+            afterSignOutUrl="/"
               appearance={{
                 elements: {
                   userButtonAvatarBox: "w-8 h-8 text-black",

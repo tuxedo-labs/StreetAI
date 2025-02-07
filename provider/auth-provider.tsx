@@ -1,26 +1,30 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { ImSpinner } from "react-icons/im";
 
-interface AuthContextType {
-  userId: string | null;
-  isAuthenticated: boolean;
+export default function ClientAuth({ children }: { children: React.ReactNode }) {
+  const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push("/dashboard");
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+  if (!isLoaded) {
+    return (
+      <div className="flex justfy-center items-center h-screen w-full">
+        <div className="flex justfy-center items-center h-screen w-full">
+          <h1>loading</h1>
+        </div>
+      </div>
+    )
+  };
+
+  return <>{children}</>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider = ({ children, userId }: { children: React.ReactNode; userId: string | null }) => {
-  return (
-    <AuthContext.Provider value={{ userId, isAuthenticated: !!userId }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};

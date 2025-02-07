@@ -1,11 +1,14 @@
 import HeroSection from "@/components/HeroSection";
 import Navbar from "@/components/Navbar";
+import ClientAuth from "@/provider/auth-provider";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <HeroSection />
+      <ClientAuth>
+        <Navbar />
+        <HeroSection />
+      </ClientAuth>
     </>
   );
 }
