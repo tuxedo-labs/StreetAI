@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import ReactMarkdown from "react-markdown";
 
 interface GeminiAIProps {
   location: { lat: number; lng: number };
@@ -6,67 +12,60 @@ interface GeminiAIProps {
 }
 
 const GeminiAI = ({ location, onResponse }: GeminiAIProps) => {
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState("");
+  const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const askAI = async () => {
     if (!question.trim()) {
-      setError('Pertanyaan tidak boleh kosong.');
+      setError("Pertanyaan tidak boleh kosong.");
       return;
     }
 
     try {
       setLoading(true);
-      setError(null); 
+      setError(null);
+      setResponse("");
 
-      const response = await fetch('/api/gemini', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ location, question }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Terjadi kesalahan saat menghubungi AI.');
-      }
-
-      const data = await response.json();
-
-      onResponse(data.answer || 'Tidak ada jawaban dari AI.');
+      const data = await res.json();
+      setResponse(data.answer || "Tidak ada jawaban dari AI.");
+      onResponse(data.answer || "Tidak ada jawaban dari AI.");
     } catch (err: any) {
-      setError(err.message || 'Terjadi kesalahan tak terduga.');
+      setError(err.message || "Terjadi kesalahan tak terduga.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      {/* Input Pertanyaan */}
-      <input
+    <CardContent className="space-y-4">
+      <Input
         type="text"
-        className="border p-2 rounded-md w-full"
-        placeholder="Tanyakan sesuatu..."
+        placeholder="Ask something..."
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
-        disabled={loading} // Nonaktifkan input saat loading
-      />
-
-      {/* Tombol Tanya AI */}
-      <button
-        className={`p-2 rounded-md ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 text-white'
-          }`}
-        onClick={askAI}
         disabled={loading}
-      >
-        {loading ? 'Memproses...' : 'Tanya AI'}
-      </button>
-
-      {/* Pesan Error */}
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-    </div>
+      />
+      <Button onClick={askAI} disabled={loading} className="w-full">
+        {loading ? "Loading" : "Ask AI"}
+      </Button>
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      {loading && <Skeleton className="h-20" />}
+      {response && <ReactMarkdown className="prose dark:prose-invert">{response}</ReactMarkdown>}
+    </CardContent>
   );
 };
 
 export default GeminiAI;
+
