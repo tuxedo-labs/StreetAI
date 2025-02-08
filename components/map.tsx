@@ -87,7 +87,7 @@ const MyMap = () => {
           placeholder="Cari lokasi..."
           className="border p-2 rounded-md w-full md:w-64"
         />
-        <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded-md w-full md:w-auto">
+        <button onClick={handleSearch} className="bg-black text-white px-4 py-2 rounded-md w-full md:w-auto">
           Cari
         </button>
       </div>
