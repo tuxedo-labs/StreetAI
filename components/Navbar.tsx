@@ -85,7 +85,7 @@ export default async function Navbar() {
 
         <div className="flex items-center gap-2 lg:pr-[200px] pr-0">
           <SignedOut>
-            <SignInButton mode="modal">
+            <SignInButton mode="modal" signUpForceRedirectUrl="/">
               <Button
                 variant="ghost"
                 className="text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
