@@ -6,11 +6,9 @@ import MyMap from "@/components/map";
 export default function Home() {
   return (
     <>
-      <ClientAuth>
-        <Navbar />
-        <HeroSection />
-        <MyMap/>
-      </ClientAuth>
+      <Navbar />
+      <HeroSection />
+      <MyMap />
     </>
   );
 }
