@@ -1,4 +1,6 @@
+import { SidebarLayout } from "@/components/layouts/SidebarLayout";
 import Navbar from "@/components/Navbar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,9 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-    <Navbar/>
-    { children }
-    </div>
+    <SidebarProvider>
+      <SidebarLayout />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }
