@@ -1,5 +1,4 @@
 import { SidebarLayout } from "@/components/layouts/SidebarLayout";
-import Navbar from "@/components/Navbar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 
@@ -16,10 +15,8 @@ export default function RootLayout({
   return (
     <SidebarProvider>
       <SidebarLayout />
-      <main>
         <SidebarTrigger />
-        {children}
-      </main>
+      {children}
     </SidebarProvider>
   );
 }

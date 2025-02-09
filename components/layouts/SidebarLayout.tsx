@@ -1,5 +1,7 @@
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 
+import { UserButton, UserProfile } from '@clerk/nextjs'
+
 import {
     Sidebar,
     SidebarContent,
@@ -18,21 +20,6 @@ const items = [
         icon: Home,
     },
     {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
         title: "Settings",
         url: "#",
         icon: Settings,
@@ -44,7 +31,7 @@ export function SidebarLayout() {
         <Sidebar>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <SidebarGroupLabel><span className="font-bold text-md">StreetAI Dashboard</span></SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
@@ -61,6 +48,10 @@ export function SidebarLayout() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <div className="p-4 flex justify-start items-center gap-3 text-white">
+                <UserButton />
+                Settings
+            </div> 
         </Sidebar>
     )
 }

@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet'
+import L from 'leaflet';
 import GeminiAI from './GeminiAI';
 
 const ClickHandler = ({ setMarker, marker, setInfo }: any) => {
@@ -44,24 +44,26 @@ const MyMap = () => {
     popupAnchor: [0, -32],
   });
 
-  const getUserLocation = () => {
+  useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation([latitude, longitude]);
-        },
-        () => {
-          setUserLocation([51.505, -0.09]);
-        }
-      );
+      navigator.permissions
+        ?.query({ name: 'geolocation' })
+        .then((permission) => {
+          if (permission.state === 'granted' || permission.state === 'prompt') {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                setUserLocation([position.coords.latitude, position.coords.longitude]);
+              },
+              () => setUserLocation([51.505, -0.09])
+            );
+          } else {
+            setUserLocation([51.505, -0.09]);
+          }
+        })
+        .catch(() => setUserLocation([51.505, -0.09]));
     } else {
       setUserLocation([51.505, -0.09]);
     }
-  };
-
-  useEffect(() => {
-    getUserLocation();
   }, []);
 
   const handleSearch = async () => {
@@ -78,8 +80,8 @@ const MyMap = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 mb-10">
-      <div className="flex flex-col md:flex-row items-center justify-center mb-4 gap-2">
+    <div className="w-full mx-auto px-4 mb-10 mt-3" style={{ overflowY: 'hidden' }}>
+      <div className="flex flex-col md:flex-row items-center justify-center w-full mb-4 gap-2">
         <input
           type="text"
           value={searchQuery}
@@ -91,6 +93,7 @@ const MyMap = () => {
           Cari
         </button>
       </div>
+
       {searchResults.length > 0 && (
         <div className="bg-white p-2 rounded-md shadow-md mb-4 max-h-40 overflow-y-auto">
           <ul>
@@ -112,15 +115,16 @@ const MyMap = () => {
           </ul>
         </div>
       )}
-      <div className="flex justify-center items-center">
+
+      <div className="absolute left-0 w-full h-screen md:h-[calc(100vh-150px)] z-0">
         <MapContainer
           center={userLocation || [51.505, -0.09]}
           zoom={13}
-          className="w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh]"
+          className="w-full h-full"
           scrollWheelZoom={true}
         >
           {selectedLocation && <SetView center={selectedLocation} />}
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap contributors' />
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; StreetAI" />
           <ClickHandler setMarker={setMarker} marker={marker} setInfo={setInfo} />
           {marker && (
             <Marker position={[marker.lat, marker.lng]} icon={customIcon}>
@@ -138,4 +142,3 @@ const MyMap = () => {
 };
 
 export default MyMap;
-
