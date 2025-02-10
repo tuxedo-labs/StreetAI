@@ -30,7 +30,7 @@ const navItems = [
 export default async function Navbar() {
   return (
     <header
-      className="fixed top-0 left-0 w-full z-50 flex h-[60px] items-center justify-between px-4 md:px-6 backdrop-blur-lg bg-opacity-30 bg-white text-black dark:bg-black dark:text-white"
+      className="fixed top-0 left-0 w-full z-50 flex h-[100px] items-center justify-between px-4 md:px-6 backdrop-blur-lg bg-opacity-30 bg-white text-black dark:bg-black dark:text-white"
     >
       <div className="flex items-center gap-4">
         <Sheet>

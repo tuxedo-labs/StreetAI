@@ -1,6 +1,7 @@
 import { WorldMap } from "./ui/globe";
 import GridBackground from "./ui/grid-background";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
+import Frame from "@/components/FameMotion"
 
 export default function HeroSection() {
     return (
@@ -18,11 +19,20 @@ export default function HeroSection() {
                                 StreetAI is an intelligent assistant that provides detailed information about any location you select. Explore the world with ease and uncover insights like never before.
                             </p>
                         </div>
+
+                        <div className="m-6 flex gap-2">
+                            <button className=" text-xl px-8 py-2  bg-black text-white rounded-full font-semibold hover:bg-black/[0.8] hover:shadow-lg">
+                                Get Started
+                            </button>
+                            <button className=" text-xl px-8 py-2  bg-white text-black rounded-full border border-black font-semibold hover:shadow-lg">
+                                Sign in
+                            </button>
+                        </div>
                         {/*  */}
                     </div>
                 </div>
             </GridBackground>
-            <WorldMap/>
+            <Frame/>
         </div>
     );
 }
