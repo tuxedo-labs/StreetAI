@@ -1,5 +1,6 @@
 import { SidebarLayout } from "@/components/layouts/SidebarLayout";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import LoaderProvider from "@/provider/loader-provider";
 import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 
@@ -20,7 +21,9 @@ export default async function RootLayout({
     <SidebarProvider>
       <SidebarLayout />
       <SidebarTrigger />
+      <LoaderProvider>
       {children}
+      </LoaderProvider>
     </SidebarProvider>
   );
 }

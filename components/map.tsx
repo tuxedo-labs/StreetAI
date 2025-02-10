@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GeminiAI from './GeminiAI';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const ClickHandler = ({ setMarker, marker, setInfo }: any) => {
   useMapEvents({
@@ -81,17 +83,17 @@ const MyMap = () => {
 
   return (
     <div className="w-full mx-auto px-4 mb-10 mt-3" style={{ overflowY: 'hidden' }}>
-      <div className="flex flex-col md:flex-row items-center justify-center w-full mb-4 gap-2">
-        <input
+      <div className="flex flex-col md:flex-row items-center justify-center w-full mb-4 gap-2 mt-5">
+        <Input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Cari lokasi..."
-          className="border p-2 rounded-md w-full md:w-64"
+          placeholder="Search location..."
+          className="w-full md:w-64"
         />
-        <button onClick={handleSearch} className="bg-black text-white px-4 py-2 rounded-md w-full md:w-auto">
-          Cari
-        </button>
+        <Button onClick={handleSearch} className="w-full md:w-auto">
+          Search
+        </Button>
       </div>
 
       {searchResults.length > 0 && (
