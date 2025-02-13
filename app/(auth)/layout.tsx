@@ -14,16 +14,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { userId, redirectToSignIn } = await auth();
-  if (!userId) return redirectToSignIn();
-
   return (
-    <SidebarProvider>
-      <SidebarLayout />
-      <SidebarTrigger />
       <LoaderProvider>
       {children}
       </LoaderProvider>
-    </SidebarProvider>
   );
 }

@@ -4,6 +4,7 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import { ThemeProvider } from "@/provider/theme-provider";
+import LoaderProvider from "@/provider/loader-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,10 +24,12 @@ export default function RootLayout({
         >
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
           >
+            <LoaderProvider>
             {children}
+            </LoaderProvider>
           </ThemeProvider>
         </body>
       </html>

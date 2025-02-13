@@ -1,30 +1,16 @@
-"use client";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { ImSpinner } from "react-icons/im";
+interface Props {
+  children: React.ReactNode;
+}
 
-export default function ClientAuth({ children }: { children: React.ReactNode }) {
-  const { isLoaded, isSignedIn } = useAuth();
-  const router = useRouter();
+export default async function AuthProvider({ children }: Props) {
+  const { userId } = await auth();
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      router.push("/dashboard");
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  if (!isLoaded) {
-    return (
-      <div className="flex justfy-center items-center h-screen w-full">
-        <div className="flex justfy-center items-center h-screen w-full">
-          <h1>loading</h1>
-        </div>
-      </div>
-    )
-  };
+  if (userId) {
+    redirect("/dashboard");
+  }
 
   return <>{children}</>;
 }
-

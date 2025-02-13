@@ -1,3 +1,4 @@
+import { WorldMap } from "./ui/globe";
 import GridBackground from "./ui/grid-background";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 
@@ -21,6 +22,7 @@ export default function HeroSection() {
                     </div>
                 </div>
             </GridBackground>
+            <WorldMap/>
         </div>
     );
 }

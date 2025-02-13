@@ -1,16 +1,17 @@
 import HeroSection from "@/components/HeroSection";
 import Navbar from "@/components/Navbar";
-import ClientAuth from "@/provider/auth-provider";
-import MyMap from "@/components/map";
+import AuthProvider from "@/provider/auth-provider";
 
 export default function Home() {
   return (
     <>
-      <ClientAuth>
+      <AuthProvider>
+
         <Navbar />
         <HeroSection />
-        <MyMap/>
-      </ClientAuth>
+
+      </AuthProvider>
     </>
   );
 }
+

@@ -29,7 +29,9 @@ const navItems = [
 
 export default async function Navbar() {
   return (
-    <header className="flex h-[60px] w-full items-center justify-between px-4 md:px-6 bg-white text-black dark:bg-black dark:text-white">
+    <header
+      className="fixed top-0 left-0 w-full z-50 flex h-[60px] items-center justify-between px-4 md:px-6 backdrop-blur-lg bg-opacity-30 bg-white text-black dark:bg-black dark:text-white"
+    >
       <div className="flex items-center gap-4">
         <Sheet>
           <SheetTrigger asChild>
@@ -59,7 +61,6 @@ export default async function Navbar() {
             </div>
           </SheetContent>
         </Sheet>
-
         <Link
           href="#"
           className="text-2xl font-bold hover:text-gray-600 dark:hover:text-gray-300 lg:px-[200px] px-0"
@@ -68,7 +69,6 @@ export default async function Navbar() {
           Tux StreetAI
         </Link>
       </div>
-
       <div className="flex items-center gap-4">
         <nav className="hidden lg:flex gap-6">
           {navItems.map(({ name, link }, index) => (
@@ -82,10 +82,9 @@ export default async function Navbar() {
             </Link>
           ))}
         </nav>
-
         <div className="flex items-center gap-2 lg:pr-[200px] pr-0">
           <SignedOut>
-            <SignInButton mode="modal">
+            <SignInButton mode="redirect" signUpForceRedirectUrl="/">
               <Button
                 variant="ghost"
                 className="text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
@@ -94,10 +93,9 @@ export default async function Navbar() {
               </Button>
             </SignInButton>
           </SignedOut>
-
           <SignedIn>
             <UserButton
-            afterSignOutUrl="/"
+              afterSignOutUrl="/"
               appearance={{
                 elements: {
                   userButtonAvatarBox: "w-8 h-8 text-black",
