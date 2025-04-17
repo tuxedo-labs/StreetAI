@@ -6,10 +6,8 @@ export default function Home() {
   return (
     <>
       <AuthProvider>
-
         <Navbar />
         <HeroSection />
-
       </AuthProvider>
     </>
   );
