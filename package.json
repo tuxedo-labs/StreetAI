@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/elements": "^0.22.20",
-    "@clerk/nextjs": "^6.11.1",
+    "@clerk/nextjs": "^6.23.3",
     "@google/generative-ai": "^0.21.0",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-separator": "^1.1.2",
