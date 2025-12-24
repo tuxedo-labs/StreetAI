@@ -79,7 +79,7 @@ function Main() {
               </Link>
               <Button
                 variant="outline"
-                className="h-14 px-8 rounded-full text-lg border-2 hover:bg-slate-100 transition-all"
+                className="h-14 px-12 rounded-full text-lg border-2 hover:bg-slate-100 transition-all"
               >
                 View Demo <FaArrowRight className="ml-2 w-4 h-4" />
               </Button>
