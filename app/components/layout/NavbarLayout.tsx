@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
 } from "~/components/ui/navigation-menu";
 import { Button } from "~/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 export default function NavbarLayout({
@@ -77,10 +77,19 @@ export default function NavbarLayout({
             </div>
 
             {/* Login Button */}
-            <div className="flex items-center gap-4">
+            {/* Auth Buttons */}
+            <div className="flex items-center gap-2">
               <Link to="/login">
-                <Button className="rounded-full px-6 bg-slate-900 text-white hover:bg-blue-600 transition-colors shadow-lg hover:shadow-blue-500/20">
+                <Button
+                  variant="ghost"
+                  className="rounded-full px-6 text-slate-700 hover:text-blue-600 hover:bg-blue-50"
+                >
                   Login
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button className="rounded-full px-6 bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">
+                  Register
                 </Button>
               </Link>
             </div>

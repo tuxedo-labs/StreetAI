@@ -4,9 +4,9 @@ export default [
   index("page/index.tsx"),
   route("/about", "page/aboutUs/index.tsx"),
   route("/service", "page/service/index.tsx"),
-  route("/login", "page/auth/loginPage.tsx"),
-  route("/register", "page/auth/register.tsx"),
+  route("/login/*", "page/auth/loginPage.tsx"),
+  route("/register/*", "page/auth/register.tsx"),
   route("/dashboard", "page/dashboard/index.tsx"),
-  route("/admin", "page/admin/index.tsx"),
+
   route("api/chat", "api/chat.ts"),
 ] satisfies RouteConfig;

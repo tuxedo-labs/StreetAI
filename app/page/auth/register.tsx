@@ -1,53 +1,21 @@
-import { Link } from "react-router";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { SignUp } from "@clerk/clerk-react";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full ">
-        <Card>
-          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-blue-100">
-            <span className="text-xl font-bold text-blue-600">SA</span>
-          </div>
-          <h2 className=" text-center text-3xl font-extrabold text-gray-900">
-            Create your account
-          </h2>
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Register</CardTitle>
-            <CardDescription>
-              Enter your details to create a new account.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <Input id="email" type="email" placeholder="Enter your email" required />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <Input id="password" type="password" placeholder="Enter your password" required />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="confirm-password" className="text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <Input id="confirm-password" type="password" placeholder="Confirm your password" required />
-            </div>
-            <Button className="w-full rounded-full">Create Account</Button>
-            <p className=" text-center text-sm text-gray-600">
-              Or{" "}
-              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
-                sign in to your account
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full flex justify-center">
+        <SignUp
+          path="/register"
+          signInUrl="/login"
+          forceRedirectUrl="/dashboard"
+          appearance={{
+            elements: {
+              formButtonPrimary:
+                "bg-blue-600 hover:bg-blue-700 text-sm normal-case",
+              card: "shadow-none border border-slate-200 rounded-3xl",
+            },
+          }}
+        />
       </div>
     </div>
   );
