@@ -7,4 +7,6 @@ export default [
   route("/login", "page/auth/loginPage.tsx"),
   route("/register", "page/auth/register.tsx"),
   route("/dashboard", "page/dashboard/index.tsx"),
+  route("/admin", "page/admin/index.tsx"),
+  route("api/chat", "api/chat.ts"),
 ] satisfies RouteConfig;

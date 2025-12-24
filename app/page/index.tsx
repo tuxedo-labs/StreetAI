@@ -1,349 +1,481 @@
 import React, { useState, useEffect } from "react";
 import Lottie from "lottie-react";
-import Navbar from "~/components/layout/NavbarLayout";
 import animationWalkGirl from "../components/animation/girl_travel_walk_cycle.json";
 import { Button } from "~/components/ui/button";
 import { Link } from "react-router";
-import {
-  SiReact,
-  SiReactrouter,
-  SiTypescript,
-  SiTailwindcss,
-} from "react-icons/si";
-import { FaArrowRight } from "react-icons/fa";
-import { FiCpu, FiMap, FiDatabase } from "react-icons/fi";
+import { FaArrowRight, FaMapMarkedAlt, FaRobot } from "react-icons/fa";
+import { FiCpu, FiMap, FiDatabase, FiArrowUpRight } from "react-icons/fi";
 import Footer from "~/components/layout/Footer";
-import { Outlet } from "react-router";
-
-const stepsData = [
-  {
-    id: 1,
-    number: "01",
-    mainTitle: "Lack of Authentic Local Information",
-    subTitle: "/ location",
-    items: [
-      "StreetAI helps you discover hidden gems and authentic tips from locals, providing in-depth insights you can't find in general travel guides.",
-    ],
-    isPrimary: true, // Kolom utama (warna biru)
-  },
-  {
-    id: 2,
-    number: "02",
-    mainTitle: "Confusion in Finding Destinations That Match Your Interests",
-    subTitle: "/ destination",
-    items: [
-      "StreetAI understands your interests and recommends the most suitable destinations, so you no longer have to worry about choosing from millions of available options.",
-    ],
-    isPrimary: false, // Kolom sekunder (warna abu-abu)
-  },
-  {
-    id: 3,
-    number: "03",
-    mainTitle: "Fear of Getting Lost in a New Location",
-    subTitle: "/ navigation",
-    items: [
-      "With interactive maps and real-time guidance, StreetAI ensures you can explore new locations with confidence and never get lost along the way.",
-    ],
-    isPrimary: false, // Kolom sekunder (warna abu-abu)
-  },
-];
-
-const techLogos = [
-  { node: <SiReact />, title: "React", href: "https://react.dev" },
-  { node: <SiReactrouter />, title: "Next.js", href: "https://nextjs.org" },
-  {
-    node: <SiTypescript />,
-    title: "TypeScript",
-    href: "https://www.typescriptlang.org",
-  },
-  {
-    node: <SiTailwindcss />,
-    title: "Tailwind CSS",
-    href: "https://tailwindcss.com",
-  },
-];
+import { motion } from "framer-motion";
+import Map from "~/components/Map";
 
 function Main() {
   const [mounted, setMounted] = useState(false);
-  const [activeCardId, setActiveCardId] = useState(1); // Default to first card
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  const stagger = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  };
+
   return (
-    <>
-      <div className="w-7xl mx-auto">
-        <div className="w-full h-screen items-center flex justify-center gap-2">
-          <div className="w-1/2 text-start space-y-2">
-            <span className="font-medium opacity-40">
-              An innovation and creativity to help tourism
-            </span>
-            <h1 className="text-6xl font-extrabold">
-              Welcome Travelers to{" "}
-              <span className="font-bold italic text-blue-500">StreetAI</span>
-            </h1>
-            <p className="opacity-80 text-xl pl-1">
-              "StreetAI innovation helps travelers explore destinations in new
-              and immersive ways, as if they had a personal tour guide who
-              understands their desires."
-            </p>
-
-            <div className="mt-5 flex gap-3">
-              <Button className=" rounded-full hover:bg-blue-500">
-                Get Started
-              </Button>
-              <Button variant="outline" className="rounded-full border-black ">
-                <FaArrowRight />
-              </Button>
-            </div>
-          </div>
-
-          <div className="w-1/2">
-            {mounted && (
-              <Lottie
-                animationData={animationWalkGirl}
-                loop={true}
-                autoplay={true}
-              />
-            )}
-          </div>
+    <div className="bg-slate-50 min-h-screen overflow-x-hidden font-sans text-slate-900 selection:bg-blue-200">
+      {/* Hero Section */}
+      <section className="relative w-full min-h-[95vh] flex items-center justify-center overflow-hidden">
+        {/* Abstract Background Shapes */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+          <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-blue-400/20 rounded-full blur-[100px] animate-pulse" />
+          <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] bg-indigo-400/20 rounded-full blur-[120px]" />
         </div>
 
-        {/* Stats Section */}
-        <div className="w-full mb-30 bg-white">
-          <div className="w-7xl mx-auto text-center">
-            <div className="flex justify-around items-center gap-8">
-              <div className="flex flex-col items-center hover:text-blue-500">
-                <div className="w-20 h-20  flex items-center justify-center mb-2">
-                  <span className="text-6xl font-bold ">195+</span>
-                </div>
-                <p className="font-semibold text-2sm">
-                  How Many Countries Explored
-                </p>
-              </div>
-              <div className="flex flex-col items-center hover:text-blue-500">
-                <div className="w-20 h-20 flex items-center justify-center mb-2">
-                  <span className="text-6xl font-bold ">1M+</span>
-                </div>
-                <p className=" font-semibold text-2sm">
-                  Tourist Attractions Worldwide
-                </p>
-              </div>
-              <div className="flex flex-col items-center hover:text-blue-500">
-                <div className="w-20 h-20 flex items-center justify-center mb-2">
-                  <span className="text-6xl font-bold ">80%</span>
-                </div>
-                <p className=" font-semibold text-2sm">
-                  Tourists Confused About Destinations
-                </p>
-              </div>
-              <div className="flex flex-col items-center hover:text-blue-500">
-                <div className="w-20 h-20 flex items-center justify-center mb-2">
-                  <span className="text-6xl font-bold ">100%</span>
-                </div>
-                <p className="font-semibold text-2sm">
-                  Free Exploration for Travelers
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* problem solve */}
-        <div className="w-full h-auto">
-          <div className="w-full flex flex-1 mb-40">
-            <div className="w-1/2 h-auto relative">
-              {/* obyek abstract */}
-              <div className="absolute top-1/6 right-1/6 w-4/5 h-3/4 bg-blue-500 rounded-full  z-0 transform rotate-12 "></div>
-              <img
-                src="./phone_overview.png"
-                alt="phone_map"
-                className="w-4/7 z-10 mx-auto h-auto -rotate-6 relative"
-              />
-            </div>
-
-            <div className="w-1/2 py-16 my-auto">
-              <span className="ml-1 opacity-45 font-medium">
-                Did you know ?
+        <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+            className="space-y-8"
+          >
+            <motion.div
+              variants={fadeIn}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 border border-slate-200 backdrop-blur-sm shadow-sm"
+            >
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span className="text-sm font-medium text-slate-600">
+                The Future of Local Travel
               </span>
-              <h2 className="text-5xl font-bold border-l-4 border-blue-500 pl-2">
-                What Does{" "}
-                <span className="font-bold italic text-blue-500">
-                  {" "}
-                  StreetAI{" "}
-                </span>{" "}
-                Want To Solve ?
-              </h2>
-              <p className="mt-3 text-base opacity-70">
-                StreetAI addresses the core challenges of travelers who are
-                tired of generic information and overwhelmed by the sheer number
-                of choices. Our solution addresses these needs by providing
-                authentic insights from locals, recommending destinations
-                personalized to their interests, and offering real-time
-                navigation guidance that makes every trip safer and more
-                enjoyable.
-              </p>
-              <div className="mt-4">
-                <Button className="rounded-full">Explore Now !</Button>
-              </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
 
-        {/* Services Section */}
-        <div className="w-full py-20 bg-gray-50">
-          <div className="w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                Services We Provide
-              </h2>
-              <p className="text-xl text-gray-600">
-                Elevate Your Travel Experience
-              </p>
-            </div>
-            <div className="grid grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200">
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                  <FiCpu className="text-white text-xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  AI-Powered Insights
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Get personalized recommendations based on your interests using
-                  advanced AI algorithms.
-                </p>
-                <Button className="rounded-full ">Learn More</Button>
-              </div>
-              <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200">
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                  <FiMap className="text-white text-xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  Interactive Maps
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Navigate destinations effortlessly with real-time, interactive
-                  maps and local guidance.
-                </p>
-                <Button className="rounded-full">Learn More</Button>
-              </div>
-              <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200">
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                  <FiDatabase className="text-white text-xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  Accurate Local Data
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Access verified information from locals for authentic and
-                  up-to-date travel details.
-                </p>
-                <Button className="rounded-full">Learn More</Button>
-              </div>
-            </div>
-          </div>
-        </div>
+            <motion.h1
+              variants={fadeIn}
+              className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]"
+            >
+              Explore the World <br />
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600">
+                Like a Local.
+              </span>
+            </motion.h1>
 
-        {/* How It Works Section */}
-        <div className="w-full py-20 bg-white">
-          <div className="w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                Our Proven Work Process
-              </h2>
-              <p className="text-xl text-gray-600">
-                How StreetAI Makes Travel Simple
-              </p>
-            </div>
-            <div className="flex justify-between items-center gap-8">
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-xl font-bold text-white">01</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Discover Interests
-                </h3>
-                <p className="text-gray-600">
-                  Tell us about your preferences and let AI analyze your travel
-                  style.
-                </p>
-              </div>
-              <div className="w-12 h-1 bg-gray-300"></div>
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-xl font-bold text-white">02</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Get Recommendations
-                </h3>
-                <p className="text-gray-600">
-                  Receive tailored suggestions for destinations and hidden gems.
-                </p>
-              </div>
-              <div className="w-12 h-1 bg-gray-300"></div>
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-xl font-bold text-white">03</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Navigate Easily
-                </h3>
-                <p className="text-gray-600">
-                  Use interactive maps for seamless navigation and real-time
-                  guidance.
-                </p>
-              </div>
-              <div className="w-12 h-1 bg-gray-300"></div>
-              <div className="flex-1 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-xl font-bold text-white">04</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Explore Freely
-                </h3>
-                <p className="text-gray-600">
-                  Enjoy your journey with confidence, empowered by authentic
-                  insights.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+            <motion.p
+              variants={fadeIn}
+              className="text-xl text-slate-600 leading-relaxed max-w-lg"
+            >
+              StreetAI combines real-time mapping with AI-powered local insights
+              to transform how you navigate and experience new destinations.
+            </motion.p>
 
-        {/* CTA Section */}
-        <div className="w-full py-20 bg-blue-500 text-white rounded-4xl mb-20">
-          <div className="w-7xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-4">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Discover the world with StreetAI – your personal travel companion.
-            </p>
-            <div className="flex justify-center gap-4">
-              <Link to="/login">
-                <Button
-                  size="lg"
-                  className="bg-white text-black hover:text-blue-500 hover:bg-gray-100 rounded-full px-8"
-                >
-                  Get Started
+            <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
+              <Link to="/register">
+                <Button className="h-14 px-8 rounded-full text-lg bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition-all hover:scale-105">
+                  Get Started Free
                 </Button>
               </Link>
-
               <Button
                 variant="outline"
-                size="lg"
-                className="border-white text-black hover:bg-white hover:text-blue-500 rounded-full px-8"
+                className="h-14 px-8 rounded-full text-lg border-2 hover:bg-slate-100 transition-all"
               >
-                Learn More
+                View Demo <FaArrowRight className="ml-2 w-4 h-4" />
               </Button>
-            </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeIn}
+              className="flex items-center gap-6 pt-4 text-slate-500"
+            >
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-xs overflow-hidden"
+                  >
+                    <img
+                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`}
+                      alt="user"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm font-medium">
+                Trusted by 50,000+ travelers
+              </p>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative h-[600px] flex items-center justify-center"
+          >
+            <div className="absolute inset-0 bg-linear-to-tr from-blue-100 to-transparent rounded-full blur-3xl opacity-50" />
+            {mounted && (
+              <div className="relative z-10 w-full max-w-lg drop-shadow-2xl">
+                <Lottie
+                  animationData={animationWalkGirl}
+                  loop={true}
+                  autoplay={true}
+                  className="w-full h-full object-contain"
+                />
+                {/* Floating Cards */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 4,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute top-20 right-0 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 max-w-[180px]"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+                      <FaMapMarkedAlt />
+                    </div>
+                    <span className="font-bold text-sm">Best Route</span>
+                  </div>
+                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full w-[80%] bg-green-500 rounded-full" />
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5,
+                    ease: "easeInOut",
+                    delay: 1,
+                  }}
+                  className="absolute bottom-20 left-10 bg-white p-4 rounded-2xl shadow-xl border border-slate-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                      <FaRobot />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500">AI Suggestion</p>
+                      <p className="font-bold text-sm">Visit Tokyo Tower</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-24 border-y border-slate-200 bg-white/50 backdrop-blur-sm">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+            {[
+              { value: "195+", label: "Countries Covered" },
+              { value: "1M+", label: "Active Guides" },
+              { value: "24/7", label: "AI Support" },
+              { value: "98%", label: "Satisfaction Rate" },
+            ].map((stat, idx) => (
+              <div key={idx} className="text-center group cursor-default">
+                <h3 className="text-4xl lg:text-5xl font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  {stat.value}
+                </h3>
+                <p className="text-slate-500 font-medium mt-2 tracking-wide uppercase text-sm">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Trending Destinations Section */}
+      <section className="py-32 bg-slate-50">
+        <div className="container mx-auto px-6">
+          <div className="flex justify-between items-end mb-16">
+            <div>
+              <span className="text-blue-600 font-bold tracking-wider text-sm uppercase">
+                Discover
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold mt-2 text-slate-900">
+                Trending Destinations
+              </h2>
+            </div>
+            <Button variant="outline" className="hidden md:flex rounded-full">
+              View All
+            </Button>
+          </div>
+
+          <div className="grid md:grid-cols-6 md:grid-rows-2 gap-6 h-[800px] md:h-[600px]">
+            {[
+              {
+                name: "Kyoto, Japan",
+                image:
+                  "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800",
+                rating: "4.9",
+                className: "md:col-span-3 md:row-span-2", // Large item
+              },
+              {
+                name: "Bali, Indonesia",
+                image:
+                  "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=500",
+                rating: "4.8",
+                className: "md:col-span-3 md:row-span-1",
+              },
+              {
+                name: "Paris, France",
+                image:
+                  "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=500",
+                rating: "4.7",
+                className: "md:col-span-1 md:row-span-1",
+              },
+              {
+                name: "New York, USA",
+                image:
+                  "https://images.unsplash.com/photo-1496442226666-8d4a0e62e6e9?auto=format&fit=crop&q=80&w=500",
+                rating: "4.6",
+                className: "md:col-span-2 md:row-span-1",
+              },
+            ].map((dest, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={`group relative rounded-4xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 ${dest.className}`}
+              >
+                <img
+                  src={dest.image}
+                  alt={dest.name}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-white font-bold flex items-center gap-1 border border-white/20">
+                  <span>★</span> {dest.rating}
+                </div>
+                <div className="absolute bottom-8 left-8 text-white">
+                  <h3 className="text-3xl font-bold tracking-tight mb-2 translate-y-2 group-hover:translate-y-0 transition-transform">
+                    {dest.name}
+                  </h3>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                    <span className="font-medium">Explore Guide</span>
+                    <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center">
+                      <FaArrowRight className="w-3 h-3" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Problems & Solutions (Split View) */}
+      <section className="py-32 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <span className="text-blue-600 font-bold tracking-wider text-sm uppercase">
+              The Challenge
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6 text-slate-900">
+              Why choose StreetAI?
+            </h2>
+            <p className="text-lg text-slate-600">
+              Traveling shouldn't be stressful. We solve the common problems
+              travelers face with intelligent technology.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-10">
+            {[
+              {
+                title: "Information Overload",
+                icon: <FiDatabase className="w-8 h-8" />,
+                desc: "Generic travel guides are overwhelming. We curate only what matters to you using AI.",
+                color: "bg-blue-50 text-blue-600",
+                delay: 0,
+              },
+              {
+                title: "Getting Lost",
+                icon: <FiMap className="w-8 h-8" />,
+                desc: "Complex transit systems? Our real-time AR navigation keeps you on the right path.",
+                color: "bg-indigo-50 text-indigo-600 lg:translate-y-12", // Staggered position
+                delay: 0.2,
+              },
+              {
+                title: "Generic Plans",
+                icon: <FiCpu className="w-8 h-8" />,
+                desc: "No more cookie-cutter itineraries. Your trip is personalized to your unique taste.",
+                color: "bg-green-50 text-green-600",
+                delay: 0.4,
+              },
+            ].map((item, i) => (
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: item.delay, duration: 0.6 }}
+                key={i}
+                className={`p-10 rounded-4xl border border-slate-100 hover:shadow-xl transition-all duration-300 group ${item.color.includes("translate") ? "lg:translate-y-12" : ""} bg-white`}
+              >
+                <div
+                  className={`w-20 h-20 rounded-3xl flex items-center justify-center mb-8 ${item.color.split(" ").slice(0, 2).join(" ")} group-hover:scale-110 transition-transform`}
+                >
+                  {item.icon}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-slate-900">
+                  {item.title}
+                </h3>
+                <p className="text-slate-600 leading-relaxed text-lg">
+                  {item.desc}
+                </p>
+                <div className="mt-8 pt-8 border-t border-slate-100 flex items-center font-semibold cursor-pointer group/link">
+                  <span className={item.color.split(" ")[1]}>Learn more</span>
+                  <FiArrowUpRight
+                    className={`ml-2 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform ${item.color.split(" ")[1]}`}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Map Preview Section */}
+      <section className="py-32 bg-slate-50 overflow-hidden relative">
+        <div className="container mx-auto px-6 text-center z-10 relative">
+          <div className="max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900">
+              Experience the Power of{" "}
+              <span className="text-blue-600">Smart Maps</span>
+            </h2>
+            <p className="text-lg text-slate-600">
+              See what's happening around you in real-time. Our map isn't just a
+              static image; it's a living, breathing guide.
+            </p>
+          </div>
+          import Map from "~/components/Map"; // ... (in the component)
+          <div className="relative w-full aspect-video md:aspect-21/9 bg-slate-100 rounded-4xl shadow-2xl overflow-hidden border border-slate-200 z-0">
+            <div className="absolute inset-0 z-0">
+              <Map onAreaSelect={() => {}} />
+            </div>
+
+            {/* Animated Map Pins */}
+            {[
+              {
+                x: "20%",
+                y: "30%",
+                color: "bg-red-500",
+                delay: 0,
+                label: "Hot Spot!",
+              },
+              {
+                x: "50%",
+                y: "50%",
+                color: "bg-blue-500",
+                delay: 1,
+                label: "You are here",
+              },
+              {
+                x: "70%",
+                y: "20%",
+                color: "bg-green-500",
+                delay: 2,
+                label: "Park",
+              },
+              {
+                x: "60%",
+                y: "70%",
+                color: "bg-orange-500",
+                delay: 1.5,
+                label: "Restaurant",
+              },
+            ].map((pin, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                transition={{ delay: pin.delay, type: "spring" }}
+                className="absolute group cursor-pointer"
+                style={{ left: pin.x, top: pin.y }}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full ${pin.color} ring-4 ring-white shadow-lg animate-bounce`}
+                />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                  {pin.label}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white" />
+                </div>
+              </motion.div>
+            ))}
+
+            {/* UI Overlay Mockup */}
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur rounded-xl p-2 px-4 shadow-lg flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="text-xs font-bold text-slate-700">
+                Live Updates Active
+              </span>
+            </div>
+          </div>
+          <div className="mt-12 flex justify-center">
+            <Link to="/dashboard">
+              <Button
+                size="lg"
+                className="rounded-full px-8 bg-slate-900 text-white hover:bg-slate-800 h-14 text-lg shadow-xl"
+              >
+                Try the Live Map
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-32 relative">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="bg-blue-600 rounded-[3rem] p-12 lg:p-24 text-center text-white relative overflow-hidden shadow-2xl shadow-blue-500/30">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="relative z-10 max-w-3xl mx-auto space-y-8"
+            >
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
+                Ready to start your journey?
+              </h2>
+              <p className="text-blue-100 text-xl">
+                Join thousands of travelers who are discovering the world in a
+                smarter, safer way.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+                <Link to="/register">
+                  <Button className="h-14 px-10 rounded-full bg-white text-blue-600 hover:bg-slate-100 text-lg font-bold shadow-lg">
+                    Sign Up Now
+                  </Button>
+                </Link>
+                <Link to="/about">
+                  <Button
+                    variant="outline"
+                    className="h-14 px-10 rounded-full border-2 border-white/30 text-black hover:bg-white/10 hover:text-white text-lg"
+                  >
+                    Learn More
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
-    </>
+    </div>
   );
 }
 
