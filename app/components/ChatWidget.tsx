@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Bot, X, Loader2 } from "lucide-react";
+import { Send, Bot, X, Sparkles, User as UserIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 
@@ -20,8 +20,8 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
       id: "welcome",
       sender: "ai",
       text: context
-        ? `Hello! I see you're looking at ${context.name}. How can I help you explore this place?`
-        : "Hello! I'm your StreetAI travel consultant. Select a location on the map or ask me anything!",
+        ? `I see you're interested in ${context.name}. I have some great local insights about this place. What would you like to know?`
+        : "Hi there! I'm your AI Travel Companion. Keep exploring the map, or ask me for general travel advice right here!",
     },
   ]);
   const [input, setInput] = useState("");
@@ -34,8 +34,9 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isLoading]);
 
+  // Reset/Add context message when context changes
   useEffect(() => {
     if (context) {
       setMessages((prev) => [
@@ -43,7 +44,7 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
         {
           id: Date.now().toString(),
           sender: "ai",
-          text: `I'm now focused on ${context.name}. Ask me for tips or history!`,
+          text: `Focusing on ${context.name}. Ready for your questions!`,
         },
       ]);
     }
@@ -57,6 +58,7 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
       sender: "user",
       text: input,
     };
+
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
@@ -79,23 +81,16 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
           { id: (Date.now() + 1).toString(), sender: "ai", text: data.reply },
         ]);
       } else {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            sender: "ai",
-            text: "Sorry, I couldn't connect to the server.",
-          },
-        ]);
+        throw new Error("No reply from AI");
       }
     } catch (error) {
-      console.error("Chat error:", error);
+      console.error("Chat Error:", error);
       setMessages((prev) => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
           sender: "ai",
-          text: "Something went wrong. Please try again.",
+          text: "I'm having a little trouble connecting to the travel network right now. Could you try asking again?",
         },
       ]);
     } finally {
@@ -104,83 +99,115 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-      {/* Header */}
-      <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-white/20 rounded-full">
-            <Bot className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="font-bold text-sm">StreetAI Consultant</h3>
-            {context && (
-              <p className="text-xs text-blue-100 truncate max-w-[150px]">
-                Focus: {context.name}
+    <div className="flex flex-col h-full bg-white/95 backdrop-blur-xl border-l border-white/20 shadow-2xl overflow-hidden font-sans">
+      {/* Premium Header */}
+      <div className="bg-linear-to-r from-blue-600 to-indigo-600 p-6 pb-8 text-white relative overflow-hidden shrink-0">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-10 blur-2xl pointer-events-none" />
+        <div className="relative z-10 flex justify-between items-start">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-xl shadow-inner border border-white/10">
+              <Sparkles className="w-5 h-5 text-yellow-300" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg tracking-tight">AI Assistant</h3>
+              <p className="text-xs text-blue-100 font-medium opacity-90">
+                {context ? `Exploring: ${context.name}` : "Travel Guide"}
               </p>
-            )}
+            </div>
           </div>
+          <button
+            onClick={onClose}
+            className="group p-2 hover:bg-white/20 rounded-full transition-all duration-200 active:scale-95"
+          >
+            <X className="w-5 h-5 text-blue-100 group-hover:text-white" />
+          </button>
         </div>
-        <button
-          onClick={onClose}
-          className="hover:bg-white/20 p-1 rounded transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+      {/* Messages Container */}
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6 bg-slate-50/50 scrollbar-thin scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-300">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex items-end gap-3 ${
+              msg.sender === "user" ? "flex-row-reverse" : "flex-row"
+            }`}
           >
+            {/* Avatar */}
             <div
-              className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm ${
+              className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-sm ${
+                msg.sender === "user" ? "bg-indigo-100" : "bg-blue-100"
+              }`}
+            >
+              {msg.sender === "user" ? (
+                <UserIcon className="w-4 h-4 text-indigo-600" />
+              ) : (
+                <Bot className="w-4 h-4 text-blue-600" />
+              )}
+            </div>
+
+            {/* Bubble */}
+            <div
+              className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm transition-all duration-300 animate-in fade-in zoom-in-95 ${
                 msg.sender === "user"
-                  ? "bg-blue-500 text-white rounded-br-none"
-                  : "bg-white text-gray-800 border border-gray-100 rounded-bl-none"
+                  ? "bg-indigo-600 text-white rounded-br-none"
+                  : "bg-white text-slate-700 border border-slate-100 rounded-bl-none"
               }`}
             >
               {msg.text}
             </div>
           </div>
         ))}
+
         {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-white p-3 rounded-2xl rounded-bl-none border border-gray-100 shadow-sm flex items-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
-              <span className="text-xs text-gray-500">Thinking...</span>
+          <div className="flex items-end gap-3">
+            <div className="shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shadow-sm">
+              <Bot className="w-4 h-4 text-blue-600" />
+            </div>
+            <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-none border border-slate-100 shadow-sm flex items-center gap-1.5">
+              <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+              <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+              <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="p-4 bg-white border-t border-gray-100">
+      {/* Input Area */}
+      <div className="p-4 bg-white border-t border-slate-100 shrink-0">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
           }}
-          className="flex gap-2"
+          className="relative flex items-center gap-2 group"
         >
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">
+            <Sparkles className="w-4 h-4" />
+          </div>
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about this place..."
-            className="flex-1 rounded-full bg-gray-50 border-gray-200 focus-visible:ring-blue-500"
+            placeholder="Ask anything..."
+            className="pl-10 pr-12 h-12 rounded-full bg-slate-50 border-slate-200 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-blue-500/20 focus-visible:border-blue-500 transition-all text-base"
           />
           <Button
             type="submit"
             size="icon"
-            className="rounded-full bg-blue-600 hover:bg-blue-700 w-10 h-10 shrink-0"
+            className={`absolute right-1 top-1 h-10 w-10 rounded-full transition-all duration-300 ${
+              input.trim()
+                ? "bg-blue-600 hover:bg-blue-700 opacity-100 rotate-0"
+                : "bg-slate-200 text-slate-400 opacity-0 -rotate-90 pointer-events-none"
+            }`}
             disabled={isLoading || !input.trim()}
           >
             <Send className="w-4 h-4" />
           </Button>
         </form>
+        <p className="text-[10px] text-center text-slate-400 mt-2">
+          AI can make mistakes. Verify important info.
+        </p>
       </div>
     </div>
   );

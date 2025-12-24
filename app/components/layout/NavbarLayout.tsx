@@ -76,7 +76,6 @@ export default function NavbarLayout({
               </NavigationMenu>
             </div>
 
-            {/* Login Button */}
             {/* Auth Buttons */}
             <div className="flex items-center gap-2">
               <Link to="/login">

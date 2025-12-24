@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const position: [number, number] = [-6.2088, 106.8456]; // Jakarta coordinates
+const defaultPosition: [number, number] = [-6.2088, 106.8456]; // Jakarta coordinates
 
 interface Area {
   name: string;
@@ -13,18 +13,18 @@ interface MapProps {
 
 export default function Map({ onAreaSelect }: MapProps) {
   const [isClient, setIsClient] = useState(false);
-  const [MapComponents, setMapComponents] = useState<any>(null);
+  const [libs, setLibs] = useState<any>(null);
+  const [selectedPosition, setSelectedPosition] = useState<
+    [number, number] | null
+  >(null);
 
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== "undefined") {
       Promise.all([import("react-leaflet"), import("leaflet")])
         .then(([reactLeaflet, leaflet]) => {
-          const { MapContainer, TileLayer, Marker, Popup, Polyline } =
-            reactLeaflet;
           const L = leaflet;
-
-          // Fix for default markers in react-leaflet
+          // Fix icons once
           delete (L.Icon.Default.prototype as any)._getIconUrl;
           L.Icon.Default.mergeOptions({
             iconRetinaUrl:
@@ -34,57 +34,80 @@ export default function Map({ onAreaSelect }: MapProps) {
             shadowUrl:
               "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
           });
-
-          setMapComponents({
-            MapContainer,
-            TileLayer,
-            Marker,
-            Popup,
-            Polyline,
-            L,
-          });
+          setLibs({ reactLeaflet, leaflet });
         })
-        .catch((error) => {
-          console.error("Failed to load map components:", error);
-        });
+        .catch((error) => console.error("Failed to load map libs:", error));
     }
   }, []);
 
-  if (!isClient || !MapComponents) {
+  if (!isClient || !libs) {
     return (
-      <div className="w-screen h-full bg-gray-200 flex items-center justify-center">
+      <div className="w-full h-full bg-slate-100 flex items-center justify-center animate-pulse">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading map...</p>
+          <p className="text-slate-400 font-medium">Loading map...</p>
         </div>
       </div>
     );
   }
 
-  const { MapContainer, TileLayer, Marker, Popup, Polyline } = MapComponents;
-  const L = MapComponents.L;
+  const { MapContainer, TileLayer, Marker, Popup, useMapEvents } =
+    libs.reactLeaflet;
+  const L = libs.leaflet;
+
+  // Define component here so it accesses current selectedPosition/onAreaSelect
+  const LocationSelector = () => {
+    const map = useMapEvents({
+      // Right click to select
+      contextmenu(e: any) {
+        const { lat, lng } = e.latlng;
+        setSelectedPosition([lat, lng]);
+
+        onAreaSelect({
+          name: `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`, // Basic label as requested
+          description: "Location selected via map. Open AI chat to explore.",
+        });
+
+        // Optional: Fly to location? maybe just pan.
+        map.panTo(e.latlng);
+      },
+    });
+
+    return selectedPosition ? (
+      <Marker
+        position={selectedPosition}
+        icon={
+          new L.Icon({
+            iconUrl:
+              "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          })
+        }
+      >
+        <Popup>Selected Location</Popup>
+      </Marker>
+    ) : null;
+  };
 
   return (
     <div className="w-full h-full">
       <MapContainer
-        center={position}
+        center={defaultPosition}
         zoom={13}
-        style={{ height: "100%", width: "100%" }}
+        className="w-full h-full outline-none" // Remove focus outline
+        style={{ height: "100%", width: "100%", background: "#f1f5f9" }}
         preferCanvas={true}
+        doubleClickZoom={false} // Prevent double click zoom if it interferes, but commonly okay.
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          updateWhenIdle={true}
-          updateWhenZooming={false}
         />
-        <Marker position={position} eventHandlers={{
-          click: () => onAreaSelect({ name: "Jakarta", description: "Capital city of Indonesia" })
-        }}>
-          <Popup>
-            Click to select this area
-          </Popup>
-        </Marker>
+        <LocationSelector />
       </MapContainer>
     </div>
   );
