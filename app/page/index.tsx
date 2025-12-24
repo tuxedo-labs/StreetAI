@@ -3,7 +3,12 @@ import Lottie from "lottie-react";
 import animationWalkGirl from "../components/animation/girl_travel_walk_cycle.json";
 import { Button } from "~/components/ui/button";
 import { Link } from "react-router";
-import { FaArrowRight, FaMapMarkedAlt, FaRobot } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaMapMarkedAlt,
+  FaRobot,
+  FaGithub,
+} from "react-icons/fa";
 import { FiCpu, FiMap, FiDatabase, FiArrowUpRight } from "react-icons/fi";
 import Footer from "~/components/layout/Footer";
 import { motion } from "framer-motion";
@@ -11,9 +16,18 @@ import Map from "~/components/Map";
 
 function Main() {
   const [mounted, setMounted] = useState(false);
+  const [contributors, setContributors] = useState<any[]>([]);
 
   useEffect(() => {
     setMounted(true);
+    fetch("https://api.github.com/repos/terarush/StreetAI/contributors")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setContributors(data);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch contributors", err));
   }, []);
 
   const fadeIn = {
@@ -431,6 +445,75 @@ function Main() {
                 Try the Live Map
               </Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Contributors Section */}
+      <section className="py-20 bg-slate-50 border-t border-slate-200">
+        <div className="container mx-auto px-6 text-center">
+          <div className="mb-12">
+            <span className="text-blue-600 font-bold tracking-wider text-sm uppercase">
+              Community
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2 text-slate-900">
+              Our Amazing Contributors
+            </h2>
+            <p className="text-slate-600 mt-4 max-w-2xl mx-auto">
+              StreetAI is built by a passionate community of developers from
+              around the world.
+            </p>
+          </div>
+
+          {contributors.length > 0 ? (
+            <div className="flex flex-wrap justify-center gap-6">
+              {contributors.map((contributor) => (
+                <a
+                  key={contributor.id}
+                  href={contributor.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative"
+                >
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300 group-hover:border-blue-500">
+                    <img
+                      src={contributor.avatar_url}
+                      alt={contributor.login}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs px-2 py-1 rounded shadow-xl whitespace-nowrap z-10 pointer-events-none">
+                    {contributor.login}
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-900"></div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            /* Fallback/Loading State */
+            <div className="flex flex-wrap justify-center gap-4 opacity-50">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div
+                  key={i}
+                  className="w-16 h-16 rounded-full bg-slate-200 animate-pulse"
+                />
+              ))}
+            </div>
+          )}
+
+          <div className="mt-12">
+            <a
+              href="https://github.com/terarush/StreetAI"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Button
+                variant="outline"
+                className="rounded-full gap-2 hover:bg-white"
+              >
+                <FaGithub /> Become a Contributor
+              </Button>
+            </a>
           </div>
         </div>
       </section>
