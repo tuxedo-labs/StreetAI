@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Send, Bot, X, Sparkles, User as UserIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { extractAndParseJSON } from "~/utils/jsonParser";
 
 interface Message {
   id: string;
@@ -12,9 +13,16 @@ interface Message {
 interface ChatWidgetProps {
   context: { name: string; description: string } | null;
   onClose: () => void;
+  initialMessage?: string;
+  onItineraryReceived?: (items: any[]) => void;
 }
 
-export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
+export default function ChatWidget({
+  context,
+  onClose,
+  initialMessage,
+  onItineraryReceived,
+}: ChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -27,6 +35,7 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasSentInitialRef = useRef(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -50,17 +59,16 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
     }
   }, [context]);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const sendMessage = async (text: string) => {
+    if (!text.trim()) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
       sender: "user",
-      text: input,
+      text: text,
     };
 
     setMessages((prev) => [...prev, userMsg]);
-    setInput("");
     setIsLoading(true);
 
     try {
@@ -76,9 +84,21 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
       const data = await response.json();
 
       if (data.reply) {
+        let replyText = data.reply;
+
+        // Use robust JSON parser
+        const parsedData = extractAndParseJSON(replyText);
+
+        if (parsedData && onItineraryReceived) {
+          onItineraryReceived(parsedData);
+          // Replace the raw JSON with a friendly message
+          replyText =
+            "✨ I've created an itinerary for you and mapped it out! Check the list on the left and the pins on the map.";
+        }
+
         setMessages((prev) => [
           ...prev,
-          { id: (Date.now() + 1).toString(), sender: "ai", text: data.reply },
+          { id: (Date.now() + 1).toString(), sender: "ai", text: replyText },
         ]);
       } else {
         throw new Error("No reply from AI");
@@ -96,6 +116,19 @@ export default function ChatWidget({ context, onClose }: ChatWidgetProps) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle Initial Message (e.g. "Generate Plan")
+  useEffect(() => {
+    if (initialMessage && !hasSentInitialRef.current) {
+      hasSentInitialRef.current = true;
+      sendMessage(initialMessage);
+    }
+  }, [initialMessage]);
+
+  const handleSend = () => {
+    sendMessage(input);
+    setInput("");
   };
 
   return (
